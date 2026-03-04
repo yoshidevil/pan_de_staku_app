@@ -1,29 +1,62 @@
-# 🥐 Pan de Staku – Enterprise Bakery & Coffee System
+# 🥐 Pan de Staku – Enterprise Bakery & Coffee Management System
 
-**Pan de Staku** is a premium French-inspired bakery and coffee Streamlit application with multi-branch support, secure authentication, inventory management, profit calculation, and GCash-style payment simulation. Perfect for small to medium bakery chains looking for a digital POS and admin dashboard.
+**Pan de Staku** is a premium French-inspired bakery and coffee Streamlit application. It is designed for both customer-facing ordering and admin-level business analytics, providing an **end-to-end bakery management solution**.
+
+The app includes:
+
+* Multi-branch support (e.g., Manila, Cebu, Davao)
+* Customer login and registration with secure password hashing
+* Admin login with full dashboard analytics
+* SQLite database storage for users, orders, inventory, and profits
+* Real-time profit calculation for each order
+* Inventory management (auto deduction when items are sold)
+* Promo code and discount system
+* GCash-style payment simulation
+* Animated, premium UI
+* Exportable sales reports in CSV
 
 ---
 
 ## 🚀 Features
 
-* Multi-branch support (Manila, Cebu, Davao)
-* Customer login and registration with hashed passwords
-* Admin login with dashboard analytics
-* SQLite database storage for users, orders, and inventory
-* Real profit calculation for each sale
-* Inventory management (auto deduction after purchase)
-* GCash-style payment simulation
-* Promo code support and discount calculation
-* Animated premium UI
-* Exportable sales CSV for business reporting
+### **Customer Side**
+
+* Register/Login securely
+* Browse breads and coffee
+* Add items to cart with quantity selection
+* Apply promo codes (e.g., `SAVE10` for discounts)
+* Checkout with delivery fee and payment simulation
+* View order history
+
+### **Admin Side**
+
+* Secure password-protected login
+* Dashboard showing:
+
+  * Total sales
+  * Total orders
+  * Best-selling items
+  * Profit calculation
+  * Inventory levels
+* Order history table with CSV export
+* Reset sales/orders with one click
+* Multi-branch overview
+
+### **Enterprise Enhancements**
+
+* Multi-branch architecture
+* Real profit and inventory tracking
+* SQLite database integration for persistence
+* Animated UI for better UX
+* Ready for cloud deployment
 
 ---
 
 ## 🛠 Installation & Setup
 
-### 1️⃣ Install Python (≥ 3.10 recommended)
+### 1️⃣ Install Python
 
-Download and install Python from [python.org](https://www.python.org/downloads/).
+Ensure Python ≥ 3.10 is installed. Download from [python.org](https://www.python.org/downloads/).
 
 ---
 
@@ -36,85 +69,100 @@ cd pan-de-staku
 
 ---
 
-### 3️⃣ Install Required Packages
-
-```bash
-pip install streamlit pandas
-```
-
-> Optional: For a clean environment, use a virtual environment:
+### 3️⃣ Create a Virtual Environment (Recommended)
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
-pip install streamlit pandas
+# Activate
+# Windows
+venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
 ```
 
 ---
 
-### 4️⃣ Run the App Locally
+### 4️⃣ Install Dependencies
+
+```bash
+pip install streamlit pandas sqlite3
+```
+
+---
+
+### 5️⃣ Run the App
 
 ```bash
 streamlit run app.py
 ```
 
-Your browser should open the app at `http://localhost:8501`.
+The app should open in your browser at: `http://localhost:8501`
 
 ---
 
-### 5️⃣ Default Accounts
+## 👤 Default Accounts
 
-* **Admin:**
-
-  * Username: `admin`
-  * Password: `admin123`
-* **Customer:**
-
-  * Can register a new account using the Register page
-
----
-
-## 📝 How to Use
-
-1. **Login/Register:** Customers must log in to order. Admins log in to access dashboard.
-2. **Select Branch:** Choose your bakery branch (Manila, Cebu, Davao).
-3. **Order Items:** Add breads and coffee to your cart.
-4. **Checkout:** Pay via GCash simulation. Inventory and profit update automatically.
-5. **Admin Dashboard:** Monitor total sales, profits, inventory, and download CSV reports.
+| Role     | Username        | Password |
+| -------- | --------------- | -------- |
+| Admin    | admin           | admin123 |
+| Customer | Register in-app | N/A      |
 
 ---
 
 ## 📦 Database Structure (SQLite)
 
 * **users:** Stores admin and customer accounts
-* **inventory:** Tracks available stock and cost per item
-* **orders:** Logs all completed orders with total sales, profit, and payment method
+* **inventory:** Tracks stock levels and item costs
+* **orders:** Logs all orders including branch, items, totals, and profits
+* **profits:** Tracks profit per sale after cost deduction
 
 ---
 
-## 🌐 Deployment
+## 💳 Payment Simulation
 
-You can deploy this app to **Streamlit Cloud**, **Heroku**, or **any VPS** that supports Python:
-
-```bash
-git push origin main
-```
-
-Streamlit Cloud will automatically detect `app.py` and dependencies.
+* Customers can "pay" with a simulated GCash-style interface
+* Promo codes automatically applied
+* Order totals, discounts, and delivery fees are calculated dynamically
 
 ---
 
-## 💡 Next Steps
+## 🌐 Deployment Guide
+
+### Streamlit Cloud
+
+1. Push repository to GitHub
+2. Connect GitHub repository to [Streamlit Cloud](https://share.streamlit.io/)
+3. Select `app.py` as the main file
+4. Streamlit Cloud installs dependencies from `requirements.txt` automatically
+
+### Other Deployment Options
+
+* **Heroku:** Use `Procfile` and push the repository
+* **VPS / Digital Ocean:** Run `streamlit run app.py --server.port=8501`
+* **Docker (optional):** Containerize the app for multi-branch scaling
+
+---
+
+## 📈 Business Architecture
+
+1. **Customer Layer:** UI for ordering, cart management, payment simulation
+2. **Branch Layer:** Inventory and sales tracking per branch
+3. **Admin Layer:** Centralized dashboard with analytics, profit, and export
+4. **Database Layer:** SQLite for storing persistent user, inventory, and order data
+
+---
+
+## 🔧 Next Steps / Improvements
 
 * Integrate real payment gateways (GCash, PayMaya, Stripe)
-* Add multi-language support
-* Implement franchise-wide analytics across branches
+* Multi-language support for international customers
+* Cloud-based multi-branch analytics
+* Advanced UI animations and transitions
 
 ---
 
 ## ⚡ License
 
-MIT License – Free to use and customize for personal or commercial bakery projects.
+MIT License – Free to use, modify, and deploy for personal or commercial bakery applications.
 
-Do you want me to do that?
+---
