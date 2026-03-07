@@ -1,168 +1,449 @@
-# 🥐 Pan de Staku – Enterprise Bakery & Coffee Management System
+# 🥐 Pan de Staku – Enterprise Bakery & Coffee Management System with AI Chatbot
 
-**Pan de Staku** is a premium French-inspired bakery and coffee Streamlit application. It is designed for both customer-facing ordering and admin-level business analytics, providing an **end-to-end bakery management solution**.
+**Pan de Staku** is a premium **French-inspired bakery and coffee management system** built with **Streamlit**.
 
-The app includes:
+The application provides a **complete digital bakery platform** that combines:
 
-* Multi-branch support (e.g., Manila, Cebu, Davao)
-* Customer login and registration with secure password hashing
-* Admin login with full dashboard analytics
-* SQLite database storage for users, orders, inventory, and profits
-* Real-time profit calculation for each order
-* Inventory management (auto deduction when items are sold)
-* Promo code and discount system
-* GCash-style payment simulation
-* Animated, premium UI
-* Exportable sales reports in CSV
+* 🛒 Customer ordering system
+* 📊 Business analytics dashboard
+* 🏪 Multi-branch architecture
+* 🤖 AI-powered chatbot assistant (**DoughBot**)
+
+It is designed to simulate a **modern smart bakery management platform** capable of handling **orders, inventory, analytics, and AI customer assistance**.
 
 ---
 
-## 🚀 Features
+# 🤖 AI Chatbot – DoughBot
 
-### **Customer Side**
+The system includes an AI bakery assistant called **DoughBot**.
 
-* Register/Login securely
+**DoughBot** helps customers interact with the bakery using natural conversation.
+
+### Capabilities
+
+* Answer questions about the menu
+* Recommend bread and coffee combinations
+* Provide delivery information
+* Help customers explore the bakery
+* Simulate an AI ordering assistant
+
+### Example Interaction
+
+**User**
+
+```
+Hi
+```
+
+**DoughBot**
+
+```
+Bonjour! I'm DoughBot, your Pan de Staku bakery assistant 🥐
+How can I help you today?
+```
+
+**User**
+
+```
+Recommend breakfast
+```
+
+**DoughBot**
+
+```
+I recommend our buttery Croissant with a Latte ☕
+It’s our most popular breakfast combo!
+```
+
+---
+
+# 🚀 Features
+
+## 🛒 Customer Side
+
+* Register and login securely
 * Browse breads and coffee
-* Add items to cart with quantity selection
-* Apply promo codes (e.g., `SAVE10` for discounts)
-* Checkout with delivery fee and payment simulation
-* View order history
-
-### **Admin Side**
-
-* Secure password-protected login
-* Dashboard showing:
-
-  * Total sales
-  * Total orders
-  * Best-selling items
-  * Profit calculation
-  * Inventory levels
-* Order history table with CSV export
-* Reset sales/orders with one click
-* Multi-branch overview
-
-### **Enterprise Enhancements**
-
-* Multi-branch architecture
-* Real profit and inventory tracking
-* SQLite database integration for persistence
-* Animated UI for better UX
-* Ready for cloud deployment
+* Add items to cart
+* Apply promo codes (example: `SAVE10`)
+* Checkout with delivery fee
+* GCash-style payment simulation
+* Order history tracking
+* AI chatbot assistance
 
 ---
 
-## 🛠 Installation & Setup
+## 🤖 AI Chatbot Features
 
-### 1️⃣ Install Python
+DoughBot supports:
 
-Ensure Python ≥ 3.10 is installed. Download from [python.org](https://www.python.org/downloads/).
+* Conversational menu browsing
+* Product recommendations
+* Coffee & bread pairing suggestions
+* Delivery information
+* Bakery FAQ assistance
+
+The chatbot is built using **prompt-based logic and conversational flow**, simulating a **smart bakery ordering assistant**.
 
 ---
 
-### 2️⃣ Clone the Repository
+## 📊 Admin Dashboard
+
+Admin features include:
+
+* Secure admin login
+* Business analytics dashboard
+* Total sales monitoring
+* Total order tracking
+* Best-selling product detection
+* Profit calculation
+* Inventory monitoring
+* Order history export (CSV)
+
+---
+
+## 🏪 Enterprise System Features
+
+The system includes **enterprise-style functionality**:
+
+* Multi-branch support
+
+  * Manila
+  * Cebu
+  * Davao
+
+* SQLite database persistence
+
+* Inventory auto-deduction when items are sold
+
+* Profit calculation based on product cost
+
+* Real-time analytics dashboard
+
+* Exportable sales reports
+
+* AI chatbot integration
+
+---
+
+# 🛠 Installation & Setup
+
+## 1️⃣ Install Python
+
+Install **Python 3.10 or higher**
+
+Download from:
+
+```
+https://www.python.org/downloads/
+```
+
+---
+
+## 2️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/pan-de-staku.git
+
 cd pan-de-staku
 ```
 
 ---
 
-### 3️⃣ Create a Virtual Environment (Recommended)
+## 3️⃣ Create Virtual Environment (Recommended)
+
+Windows
 
 ```bash
 python -m venv venv
-# Activate
-# Windows
 venv\Scripts\activate
-# Linux/Mac
+```
+
+Mac / Linux
+
+```bash
+python -m venv venv
 source venv/bin/activate
 ```
 
 ---
 
-### 4️⃣ Install Dependencies
+## 4️⃣ Install Dependencies
 
 ```bash
 pip install streamlit pandas sqlite3
 ```
 
+Optional AI libraries (future expansion)
+
+```bash
+pip install openai langchain
+```
+
 ---
 
-### 5️⃣ Run the App
+## 5️⃣ Run the Application
 
 ```bash
 streamlit run app.py
 ```
 
-The app should open in your browser at: `http://localhost:8501`
+Then open:
+
+```
+http://localhost:8501
+```
 
 ---
 
-## 👤 Default Accounts
+# 👤 Default Accounts
 
 | Role     | Username        | Password |
 | -------- | --------------- | -------- |
 | Admin    | admin           | admin123 |
-| Customer | Register in-app | N/A      |
+| Customer | Register in app | N/A      |
 
 ---
 
-## 📦 Database Structure (SQLite)
+# 📦 Database Structure (SQLite)
 
-* **users:** Stores admin and customer accounts
-* **inventory:** Tracks stock levels and item costs
-* **orders:** Logs all orders including branch, items, totals, and profits
-* **profits:** Tracks profit per sale after cost deduction
+The system uses **SQLite for persistent storage**.
+
+### Tables
+
+### users
+
+Stores account information
+
+```
+id
+username
+password_hash
+role
+```
+
+### inventory
+
+Tracks stock levels
+
+```
+item_name
+stock
+cost
+price
+```
+
+### orders
+
+Logs all orders
+
+```
+order_id
+timestamp
+items
+total_price
+branch
+customer
+```
+
+### profits
+
+Tracks profit per order
+
+```
+order_id
+profit
+cost
+revenue
+```
 
 ---
 
-## 💳 Payment Simulation
+# 💳 Payment Simulation
 
-* Customers can "pay" with a simulated GCash-style interface
-* Promo codes automatically applied
-* Order totals, discounts, and delivery fees are calculated dynamically
+The system includes a **GCash-style payment simulation**.
 
----
+Features include:
 
-## 🌐 Deployment Guide
-
-### Streamlit Cloud
-
-1. Push repository to GitHub
-2. Connect GitHub repository to [Streamlit Cloud](https://share.streamlit.io/)
-3. Select `app.py` as the main file
-4. Streamlit Cloud installs dependencies from `requirements.txt` automatically
-
-### Other Deployment Options
-
-* **Heroku:** Use `Procfile` and push the repository
-* **VPS / Digital Ocean:** Run `streamlit run app.py --server.port=8501`
-* **Docker (optional):** Containerize the app for multi-branch scaling
+* Delivery fee calculation
+* Promo code discount
+* Dynamic order totals
+* Payment confirmation
+* Transaction logging
 
 ---
 
-## 📈 Business Architecture
+# 🧪 Prompt Testing (Chatbot Testing)
 
-1. **Customer Layer:** UI for ordering, cart management, payment simulation
-2. **Branch Layer:** Inventory and sales tracking per branch
-3. **Admin Layer:** Centralized dashboard with analytics, profit, and export
-4. **Database Layer:** SQLite for storing persistent user, inventory, and order data
+The chatbot behavior is tested through **sample prompt interactions**.
+
+Example tests include:
+
+### Test 1 – Greeting
+
+Input
+
+```
+Hello
+```
+
+Expected Output
+
+```
+Bonjour! I'm DoughBot, your bakery assistant.
+```
 
 ---
 
-## 🔧 Next Steps / Improvements
+### Test 2 – Menu Inquiry
 
-* Integrate real payment gateways (GCash, PayMaya, Stripe)
-* Multi-language support for international customers
-* Cloud-based multi-branch analytics
-* Advanced UI animations and transitions
+Input
+
+```
+What breads do you have?
+```
+
+Expected Output
+
+```
+We offer Croissant, Baguette, Brioche, and Pain au Chocolat.
+```
 
 ---
 
-## ⚡ License
+### Test 3 – Recommendation
 
-MIT License – Free to use, modify, and deploy for personal or commercial bakery applications.
+Input
+
+```
+Recommend a coffee and bread combo
+```
+
+Expected Output
+
+```
+Try our Croissant with a Latte ☕
+```
+
+---
+
+### Test 4 – Delivery
+
+Input
+
+```
+Do you offer delivery?
+```
+
+Expected Output
+
+```
+Yes! Delivery is available within the city for ₱40.
+```
+
+---
+
+# 🌐 Deployment Guide
+
+## Streamlit Cloud
+
+1. Push the repository to GitHub
+2. Open
+
+```
+https://share.streamlit.io
+```
+
+3. Connect GitHub repository
+4. Select `app.py`
+5. Deploy
+
+---
+
+## Alternative Deployment Options
+
+### VPS
+
+```
+streamlit run app.py --server.port=8501
+```
+
+### Docker
+
+Containerize the app for scalable deployment across bakery branches.
+
+### Heroku
+
+Deploy using a **Procfile** and requirements.txt.
+
+---
+
+# 🏗 System Architecture
+
+The system follows a **multi-layer architecture**.
+
+### 1️⃣ Customer Layer
+
+User interface for browsing menu and placing orders.
+
+### 2️⃣ AI Layer
+
+DoughBot chatbot handles conversational assistance.
+
+### 3️⃣ Branch Layer
+
+Manages inventory and sales for each branch.
+
+### 4️⃣ Admin Layer
+
+Dashboard analytics and business insights.
+
+### 5️⃣ Database Layer
+
+SQLite handles persistent storage for:
+
+* users
+* inventory
+* orders
+* profits
+
+---
+
+# 🎨 Technology Stack
+
+| Component | Technology           |
+| --------- | -------------------- |
+| Frontend  | Streamlit            |
+| Backend   | Python               |
+| Database  | SQLite               |
+| Analytics | Pandas               |
+| AI Logic  | Prompt-based chatbot |
+
+---
+
+# 🔮 Future Improvements
+
+Possible future upgrades include:
+
+* Real AI model integration (OpenAI / LLM)
+
+* Voice ordering system
+
+* Mobile-friendly UI
+
+* Real payment gateway integration
+
+  * GCash
+  * PayMaya
+  * Stripe
+
+* Smart inventory prediction using AI
+
+---
+
+# ⚡ License
+
+MIT License
+
+Free to use, modify, and deploy for **educational, personal, or commercial bakery applications**.
 
 ---
