@@ -329,8 +329,10 @@ init_session_state()
 
 appearance_choice = st.sidebar.radio(
     "Appearance",
-    ["Light", "Dark"],
-    index=0 if st.session_state.appearance == "Light" else 1,
+    ["Light", "Dark", "Coffee", "Cheese"],
+    index=["Light", "Dark", "Coffee", "Cheese"].index(st.session_state.appearance)
+    if st.session_state.appearance in ["Light", "Dark", "Coffee", "Cheese"]
+    else 0,
     horizontal=True,
 )
 st.session_state.appearance = appearance_choice
@@ -349,6 +351,34 @@ if st.session_state.appearance == "Dark":
     nav_text_color = "#fff8ec"
     nav_hover = "rgba(255, 248, 236, 0.18)"
     nav_card = "rgba(255, 248, 236, 0.08)"
+elif st.session_state.appearance == "Coffee":
+    app_background = (
+        "radial-gradient(circle at 14% 12%, rgba(210, 180, 140, 0.25), transparent 36%),"
+        "radial-gradient(circle at 84% 14%, rgba(111, 78, 55, 0.28), transparent 34%),"
+        "linear-gradient(150deg, #3b2a22 0%, #5c4033 34%, #8b5e3c 64%, #b07d4f 100%)"
+    )
+    sidebar_background = "linear-gradient(170deg, #2f221d 0%, #4b352b 34%, #6f4e37 67%, #b07d4f 100%)"
+    block_background = "linear-gradient(160deg, rgba(80, 56, 42, 0.76), rgba(46, 32, 25, 0.54))"
+    block_border = "rgba(226, 198, 165, 0.24)"
+    title_color = "#f9ead7"
+    text_color = "#f0dcc3"
+    nav_text_color = "#fff4e7"
+    nav_hover = "rgba(255, 244, 231, 0.16)"
+    nav_card = "rgba(255, 244, 231, 0.08)"
+elif st.session_state.appearance == "Cheese":
+    app_background = (
+        "radial-gradient(circle at 12% 16%, rgba(255, 250, 220, 0.42), transparent 38%),"
+        "radial-gradient(circle at 86% 12%, rgba(255, 213, 128, 0.34), transparent 34%),"
+        "linear-gradient(145deg, #fff6d9 0%, #ffe8a8 33%, #ffd166 62%, #d6a651 80%, #8f5e2e 100%)"
+    )
+    sidebar_background = "linear-gradient(165deg, #fff3cc 0%, #ffe08a 30%, #f2c261 58%, #c9965a 80%, #7f4f24 100%)"
+    block_background = "linear-gradient(160deg, rgba(255, 251, 231, 0.76), rgba(255, 236, 184, 0.40))"
+    block_border = "rgba(143, 94, 46, 0.24)"
+    title_color = "#3f250f"
+    text_color = "#503116"
+    nav_text_color = "#1d1208"
+    nav_hover = "rgba(79, 49, 22, 0.12)"
+    nav_card = "rgba(255, 247, 218, 0.48)"
 else:
     app_background = (
         "radial-gradient(circle at 12% 14%, rgba(255, 248, 236, 0.92), transparent 40%),"
