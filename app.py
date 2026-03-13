@@ -768,7 +768,7 @@ section[data-testid="stSidebar"] [data-baseweb="radio"] label:hover {{
 section[data-testid="stSidebar"] [data-baseweb="radio"] label[data-checked="true"],
 section[data-testid="stSidebar"] [data-baseweb="radio"] label:has(input:checked),
 section[data-testid="stSidebar"] [data-baseweb="radio"] input:checked + div {{
-    background: rgba(255, 244, 231, 0.20);
+    background: rgba(255, 244, 231, 0.24);
     border-left-color: rgba(255, 244, 231, 0.7);
     font-weight: 600;
 }}
@@ -792,8 +792,8 @@ section[data-testid="stSidebar"] .stRadio > label {{
 
 .block-container {{
     background: {block_background};
-    border: 1px solid {block_border};
-    border-radius: 16px;
+    border: none;
+    border-radius: 18px;
     padding: 1.4rem 1.2rem;
     backdrop-filter: blur(2px);
 }}
