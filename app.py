@@ -1600,6 +1600,10 @@ elif menu == "Login":
         if user:
             st.session_state.user = user["username"]
             st.session_state.role = user["role"]
+            if user["role"] == "admin":
+                st.session_state.nav = "Admin Dashboard"
+                st.success("Login successful. Redirecting to Admin Dashboard...")
+                st.rerun()
             st.success("Login successful.")
         else:
             st.error("Invalid credentials.")
@@ -1896,7 +1900,7 @@ elif menu == "DoughBot Chat":
         st.session_state.chat_messages.append({"role": "assistant", "content": response})
 
 elif menu == "Admin Dashboard":
-    st.header("Admin Panel")
+    st.header("Admin Monitoring Dashboard")
     if not st.session_state.user:
         st.warning("Login as admin to view this page.")
     elif st.session_state.role != "admin":
@@ -1904,15 +1908,19 @@ elif menu == "Admin Dashboard":
     else:
         df_orders = pd.read_sql_query("SELECT * FROM orders", conn)
         df_inventory = pd.read_sql_query("SELECT * FROM inventory", conn)
+        df_users = pd.read_sql_query("SELECT id, username, role FROM users", conn)
 
         total_sales = int(df_orders["total"].sum()) if not df_orders.empty else 0
         total_profit = int(df_orders["profit"].sum()) if not df_orders.empty else 0
+        total_users = int(df_users.shape[0]) if not df_users.empty else 0
 
-        st.subheader("Total Sales")
-        st.metric("PHP", total_sales)
+        metric_col1, metric_col2, metric_col3 = st.columns(3)
+        metric_col1.metric("Total Sales (PHP)", total_sales)
+        metric_col2.metric("Total Profit (PHP)", total_profit)
+        metric_col3.metric("Total Users", total_users)
 
-        st.subheader("Total Profit")
-        st.metric("PHP", total_profit)
+        st.subheader("Users")
+        st.dataframe(df_users, use_container_width=True)
 
         st.subheader("Orders")
         st.dataframe(df_orders, use_container_width=True)
