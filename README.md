@@ -1,8 +1,9 @@
 ﻿# 🥐 Pan de Staku - Enterprise Bakery & Coffee Management System with AI Chatbot 🤖
 
-**Pan de Staku** is a **French-inspired bakery and coffee management system** built with **Streamlit** ☕.
+**Pan de Staku** is a **French-inspired bakery and coffee management system** built with **Streamlit** ☕.  
+It delivers a **complete digital bakery platform** with customer ordering, analytics, branch control, and an AI-style assistant.
 
-It delivers a **complete digital bakery platform** that combines:
+## ✅ What It Delivers
 
 - 🍞 Customer ordering system  
 - 📊 Business analytics dashboard  
@@ -123,6 +124,29 @@ The app includes **business information tabs** for:
 - 🥖 **Product** — Bread and coffee offerings  
 - 🛎 **Service** — Service scope and commitments  
 - 📞 **Contact** — Support channels and branch details  
+
+---
+
+# 🧭 Navigation Guide
+
+Use the top navigation to move quickly:
+
+- 🏠 Home  
+- 🔐 Login / Register  
+- 🏬 Branch  
+- 📋 Menu List  
+- 🧾 Order & Cart  
+- 🤖 DoughBot Chat  
+- 🧑‍💼 Admin Dashboard  
+
+---
+
+# 🎨 UI Highlights
+
+- ✨ Glow-up themed interface with gradients and shadows  
+- 🔠 Custom fonts for modern bakery branding  
+- 🧭 Top horizontal navigation for fast access  
+- 🧾 Menu lists styled like real café menus  
 
 ---
 
@@ -384,6 +408,7 @@ Possible upgrades:
 - 📱 Mobile-first responsive UI refinement  
 - 💳 Real **payment gateway integration** (GCash, Maya, Stripe)  
 - 📈 **AI-based inventory demand forecasting**  
+- 🧾 Printable receipts and invoice export  
 
 ---
 
