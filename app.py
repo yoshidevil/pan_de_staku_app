@@ -276,7 +276,6 @@ def doughbot_response(prompt: str, conn: sqlite3.Connection = None) -> str:
         ("Rian", "<3"),
         ("Zack", "<3"),
     ]
-
     greet_words = {
         "hi",
         "hello",
@@ -1132,7 +1131,6 @@ p, li, label, span, div {{
 cart_count = sum(entry["qty"] for entry in st.session_state.cart)
 current_user = st.session_state.user or "Guest"
 st.sidebar.caption(f"User: {current_user} | Branch: {st.session_state.branch}")
-
 menu = st.sidebar.radio(
     f"Navigation Cart({cart_count})",
     [
@@ -1471,6 +1469,3 @@ elif menu == "Admin Dashboard":
 
         st.subheader("Inventory")
         st.dataframe(df_inventory, use_container_width=True)
-
-
-
