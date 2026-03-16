@@ -1422,6 +1422,8 @@ nav_items = [
 ]
 if "nav" not in st.session_state:
     st.session_state.nav = nav_items[0]
+if "pending_nav" in st.session_state:
+    st.session_state.nav = st.session_state.pop("pending_nav")
 
 st.markdown('<div class="top-nav">', unsafe_allow_html=True)
 menu = st.radio(
@@ -1610,7 +1612,7 @@ elif menu == "Login":
             st.session_state.user = user["username"]
             st.session_state.role = user["role"]
             if user["role"] == "admin":
-                st.session_state.nav = "Admin Dashboard"
+                st.session_state.pending_nav = "Admin Dashboard"
                 st.success("Login successful. Redirecting to Admin Dashboard...")
                 st.rerun()
             st.success("Login successful.")
