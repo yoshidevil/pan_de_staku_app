@@ -1,36 +1,35 @@
-# 🥐 Pan de Staku - Enterprise Bakery & Coffee Management System with AI Chatbot 🤖
+﻿# 🥐 Pan de Staku - Enterprise Bakery & Coffee Management System with AI Chatbot 🤖
 
 **Pan de Staku** is a **French-inspired bakery and coffee management system** built with **Streamlit** ☕.
 
-The app provides a **complete digital bakery platform** that combines:
+It delivers a **complete digital bakery platform** that combines:
 
-🍞 Customer ordering system
-📊 Business analytics dashboard
-🏬 Multi-branch architecture
-🤖 AI-powered chatbot assistant (**DoughBot**)
+- 🍞 Customer ordering system  
+- 📊 Business analytics dashboard  
+- 🏬 Multi-branch architecture  
+- 🤖 AI-powered chatbot assistant (**DoughBot**)  
 
 It simulates a **modern smart bakery platform** capable of handling:
 
-* 🛒 Orders
-* 📦 Inventory
-* 📈 Analytics
-* 💬 AI customer assistance
+- 🛒 Orders  
+- 📦 Inventory  
+- 📈 Analytics  
+- 💬 AI customer assistance  
 
 ---
 
 # 🤖 AI Chatbot - DoughBot
 
-The system includes an **AI bakery assistant** called **DoughBot**.
-
+The system includes an **AI bakery assistant** called **DoughBot**.  
 DoughBot helps customers interact with the bakery using **natural conversation**.
 
 ## 🧠 Capabilities
 
-* 🍞 Answer questions about **menu items and prices**
-* ☕ Recommend **bread and coffee combinations**
-* 🚚 Provide **delivery and branch information**
-* 💳 Explain **payment steps (GCash and Maya flow)**
-* 🛍 Guide users through **order and checkout steps**
+- 🍞 Answer questions about **menu items and prices**  
+- ☕ Recommend **bread and coffee combinations**  
+- 🚚 Provide **delivery and branch information**  
+- 💳 Explain **payment steps (GCash and Maya flow)**  
+- 🛍 Guide users through **order and checkout steps**  
 
 ---
 
@@ -66,16 +65,14 @@ My recommendation: Croissant with Latte.
 
 ## 🛒 Customer Side
 
-* 🔐 Register and login securely
-* 🥖 Browse breads and coffee
-* 🛍 Add items to cart
-* 🌏 Branch-based ordering
+- 🔐 Register and login securely  
+- 🥖 Browse breads and coffee  
+- 🛍 Add items to cart  
+- 🌏 Branch-based ordering  
+- 🔢 OTP-style payment validation simulation  
+- 🤖 DoughBot chat assistance  
 
-  * Manila
-  * Cebu
-  * Davao
-* 🔢 OTP-style payment validation simulation
-* 🤖 DoughBot chat assistance
+Branch locations: 🏙 Manila • 🌆 Cebu • 🌃 Davao
 
 ---
 
@@ -83,13 +80,13 @@ My recommendation: Croissant with Latte.
 
 DoughBot supports:
 
-* 💬 Conversational menu browsing
-* 🥐 Product recommendations
-* ☕ Coffee and bread pairing suggestions
-* 🚚 Delivery and branch FAQs
-* 🛍 Ordering and payment guidance
+- 💬 Conversational menu browsing  
+- 🥐 Product recommendations  
+- ☕ Coffee and bread pairing suggestions  
+- 🚚 Delivery and branch FAQs  
+- 🛍 Ordering and payment guidance  
 
-The chatbot is built using **rule-based, prompt-driven conversational logic**.
+The chatbot uses **rule-based, prompt-driven conversational logic**.
 
 ---
 
@@ -97,11 +94,11 @@ The chatbot is built using **rule-based, prompt-driven conversational logic**.
 
 Admin features include:
 
-* 🔐 Secure admin login
-* 💰 Total sales monitoring
-* 📈 Total profit monitoring
-* 📋 Full orders table view
-* 📦 Inventory table view
+- 🔐 Secure admin login  
+- 💰 Total sales monitoring  
+- 📈 Total profit monitoring  
+- 📋 Full orders table view  
+- 📦 Inventory table view  
 
 ---
 
@@ -109,32 +106,23 @@ Admin features include:
 
 The system includes **enterprise-style functionality**:
 
-* 🌍 **Multi-branch support**
-
-  * 🏙 Manila
-  * 🌆 Cebu
-  * 🌃 Davao
-
-* 🗄 SQLite database persistence
-
-* 📦 Inventory auto-deduction when items are sold
-
-* 💵 Profit calculation based on product cost
-
-* 📊 Real-time metrics in dashboard
-
-* 🤖 AI chatbot integration
+- 🌍 Multi-branch support: 🏙 Manila • 🌆 Cebu • 🌃 Davao  
+- 🗄 SQLite database persistence  
+- 📦 Inventory auto-deduction when items are sold  
+- 💵 Profit calculation based on product cost  
+- 📊 Real-time metrics in dashboard  
+- 🤖 AI chatbot integration  
 
 ---
 
 # 📑 Added Content Tabs
 
-The app now includes **business information tabs** for:
+The app includes **business information tabs** for:
 
-🏠 **Home** – Pan de Staku concept explanation
-🥖 **Product** – Bread and coffee offerings
-🛎 **Service** – Service scope and commitments
-📞 **Contact** – Support channels and branch details
+- 🏠 **Home** — Pan de Staku concept explanation  
+- 🥖 **Product** — Bread and coffee offerings  
+- 🛎 **Service** — Service scope and commitments  
+- 📞 **Contact** — Support channels and branch details  
 
 ---
 
@@ -257,10 +245,10 @@ timestamp
 
 The app includes a **digital payment simulation** with:
 
-* 📱 **GCash or Maya selection**
-* ☎️ **11-digit phone validation**
-* 🔐 **6-digit OTP validation**
-* 🧾 **Transaction logging into orders table**
+- 📱 **GCash or Maya selection**  
+- ☎️ **11-digit phone validation**  
+- 🔐 **6-digit OTP validation**  
+- 🧾 **Transaction logging into orders table**  
 
 ---
 
@@ -336,16 +324,16 @@ Delivery availability and base fee information.
 
 ## ☁️ Streamlit Community Cloud
 
-1. Push the repository to **GitHub**.
+1. Push the repository to **GitHub**.  
 2. Open:
 
 ```
 https://share.streamlit.io
 ```
 
-3. Connect your **GitHub repository**.
-4. Select `app.py`.
-5. Deploy.
+3. Connect your **GitHub repository**.  
+4. Select `app.py`.  
+5. Deploy.  
 
 ---
 
@@ -367,11 +355,11 @@ Containerize the app for **scalable deployment across branches**.
 
 The system follows a **multi-layer structure**:
 
-1️⃣ **Customer Layer** – UI for browsing and placing orders
-2️⃣ **AI Layer** – DoughBot conversational assistance
-3️⃣ **Branch Layer** – Branch-aware ordering system
-4️⃣ **Admin Layer** – Dashboard analytics and inventory visibility
-5️⃣ **Database Layer** – SQLite storage for users, inventory, and orders
+1. 🛒 **Customer Layer** — UI for browsing and placing orders  
+2. 🤖 **AI Layer** — DoughBot conversational assistance  
+3. 🏬 **Branch Layer** — Branch-aware ordering system  
+4. 🧑‍💼 **Admin Layer** — Dashboard analytics and inventory visibility  
+5. 🗄 **Database Layer** — SQLite storage for users, inventory, and orders  
 
 ---
 
@@ -391,11 +379,11 @@ The system follows a **multi-layer structure**:
 
 Possible upgrades:
 
-* 🧠 Real **LLM integration** (OpenAI or local models)
-* 🎤 **Voice ordering workflow**
-* 📱 Mobile-first responsive UI refinement
-* 💳 Real **payment gateway integration** (GCash, Maya, Stripe)
-* 📈 **AI-based inventory demand forecasting**
+- 🧠 Real **LLM integration** (OpenAI or local models)  
+- 🎤 **Voice ordering workflow**  
+- 📱 Mobile-first responsive UI refinement  
+- 💳 Real **payment gateway integration** (GCash, Maya, Stripe)  
+- 📈 **AI-based inventory demand forecasting**  
 
 ---
 
@@ -405,8 +393,8 @@ MIT License.
 
 ✅ Free to **use, modify, and deploy** for:
 
-* 🎓 Educational projects
-* 🧑‍💻 Personal development
-* 🏢 Commercial bakery applications
+- 🎓 Educational projects  
+- 🧑‍💻 Personal development  
+- 🏢 Commercial bakery applications  
 
 ---
