@@ -1539,7 +1539,7 @@ without losing the feel of a neighborhood bakery.
     if home_image:
         left_col, center_col, right_col = st.columns([1, 2, 1])
         with center_col:
-            st.image(str(home_image), use_container_width=True)
+            st.image(str(home_image), width="stretch")
             st.markdown(
                 """
 <div style="text-align: center; margin-top: 0.55rem; font-weight: 600;">
@@ -1947,10 +1947,10 @@ elif menu == "Admin Dashboard":
         metric_col3.metric("Total Users", total_users)
 
         st.subheader("Users")
-        st.dataframe(df_users, use_container_width=True)
+        st.dataframe(df_users, width="stretch")
 
         st.subheader("Orders")
-        st.dataframe(df_orders, use_container_width=True)
+        st.dataframe(df_orders, width="stretch")
 
         st.subheader("Inventory")
-        st.dataframe(df_inventory, use_container_width=True)
+        st.dataframe(df_inventory, width="stretch")
