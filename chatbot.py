@@ -112,6 +112,8 @@ h1, h2, h3 {
 CHATBOT_NAME = "DoughBot"
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
+BRANCHES = ["Manila", "Cebu", "Davao", "Iloilo", "General Santos", "Baguio"]
+BRANCH_LIST_TEXT = ", ".join(BRANCHES)
 
 # ------------------------------------------------
 # MENU DATA
@@ -213,7 +215,7 @@ with col1:
     df["Price"] = df["Price"].apply(lambda x: f"₱{x}")
 
     df["Price"] = df["Price"].apply(lambda x: f"PHP {x}")
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df, width="stretch")
 
     st.markdown("### ⭐ Popular Combo")
 
@@ -325,6 +327,7 @@ def _primary_doughbot_ai(prompt):
     coffee = ["coffee", "espresso", "latte", "cappuccino", "americano", "mocha", "macchiato", "flat white"]
     bread = ["bread", "croissant", "baguette", "brioche", "sourdough", "danish", "fougasse"]
     delivery = ["delivery", "deliver", "shipping"]
+    branch = ["branch", "branches", "location", "store", "stores", "where are you", "where located"]
     price = ["price", "cost", "how much", "rates"]
 
     combos = [
@@ -377,6 +380,12 @@ def _primary_doughbot_ai(prompt):
         return [
             "Yes, delivery is available. Fees depend on distance.",
             "We can deliver locally. Share your area and I will estimate.",
+        ]
+
+    if any(x in text for x in branch):
+        return [
+            f"Our branches are in {BRANCH_LIST_TEXT}.",
+            f"You can visit us in {BRANCH_LIST_TEXT}.",
         ]
 
     if any(x in text for x in thanks):

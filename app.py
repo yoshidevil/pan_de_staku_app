@@ -11,7 +11,40 @@ import streamlit as st
 DB_PATH = "pan_de_staku.db"
 ADMIN_USERNAME = "admin"
 ADMIN_DEFAULT_PASSWORD = "admin123"
-BRANCHES = ["Manila", "Cebu", "Davao"]
+BRANCH_DETAILS = {
+    "Manila": {
+        "address": "Ayala Avenue, Makati",
+        "hours": "7:00 AM - 9:00 PM",
+        "best_pair": "Croissant + Latte",
+    },
+    "Cebu": {
+        "address": "IT Park, Cebu City",
+        "hours": "7:00 AM - 9:00 PM",
+        "best_pair": "Pandesal + Americano",
+    },
+    "Davao": {
+        "address": "Lanang, Davao City",
+        "hours": "7:00 AM - 9:00 PM",
+        "best_pair": "Ube + Mocha",
+    },
+    "Iloilo": {
+        "address": "Festive Walk, Mandurriao, Iloilo City",
+        "hours": "7:00 AM - 9:00 PM",
+        "best_pair": "Brioche + Flat White",
+    },
+    "General Santos": {
+        "address": "J. Catolico Avenue, General Santos City",
+        "hours": "7:00 AM - 9:00 PM",
+        "best_pair": "Loaf Bread + Cappuccino",
+    },
+    "Baguio": {
+        "address": "Session Road, Baguio City",
+        "hours": "7:00 AM - 9:00 PM",
+        "best_pair": "Pain au Chocolat + Latte",
+    },
+}
+BRANCHES = list(BRANCH_DETAILS.keys())
+BRANCH_LIST_TEXT = ", ".join(BRANCHES)
 
 bread_menu = {
     "Croissant": 120,
@@ -679,7 +712,7 @@ def doughbot_response(prompt: str, conn: sqlite3.Connection = None) -> str:
 
     if matches(branch_words):
         current_branch = st.session_state.get("branch", BRANCHES[0])
-        return signed_reply("branch", f"Branches: Manila, Cebu, Davao. Your current selected branch is {current_branch}.")
+        return signed_reply("branch", f"Branches: {BRANCH_LIST_TEXT}. Your current selected branch is {current_branch}.")
 
     if matches(payment_words):
         return signed_reply(
@@ -1583,11 +1616,11 @@ elif menu == "Service":
     st.write("Pan de Staku provides a complete service flow from product discovery to post-order assistance.")
 
     st.markdown(
-        """
+        f"""
 - In-store and branch-based ordering for walk-in and local fulfillment.
 - Digital cart and checkout flow for fast order placement.
 - GCash and Maya payment support with verification flow.
-- Multi-branch coverage in Manila, Cebu, and Davao.
+- Multi-branch coverage in {BRANCH_LIST_TEXT}.
 - DoughBot support for menu guidance, pairings, prices, and ordering steps.
 - Inventory-aware ordering to reduce out-of-stock frustration.
 """
@@ -1604,11 +1637,11 @@ elif menu == "Contact":
     st.write("Reach Pan de Staku for orders, partnerships, branch concerns, or customer support.")
 
     st.markdown(
-        """
+        f"""
 **Head Office Email:** support@pandestaku.com  
 **Customer Hotline:** +63 917 555 0123  
 **Business Hours:** Monday to Sunday, 7:00 AM - 9:00 PM  
-**Main Branches:** Manila, Cebu, Davao
+**Main Branches:** {BRANCH_LIST_TEXT}
 """
     )
 
@@ -1648,27 +1681,25 @@ elif menu == "Register":
 
 elif menu == "Branch":
     st.header("Branch Selection")
+    if st.session_state.branch not in BRANCHES:
+        st.session_state.branch = BRANCHES[0]
     branch = st.selectbox("Select Branch", BRANCHES, index=BRANCHES.index(st.session_state.branch))
     st.session_state.branch = branch
     st.success(f"Branch set to {branch}.")
-    manila_col, cebu_col, davao_col = st.columns(3)
-    with manila_col:
-        st.subheader("Manila Branch")
-        st.markdown("**Address:** Ayala Avenue, Makati")
-        st.markdown("**Hours:** 7:00 AM - 9:00 PM")
-        st.markdown("**Best Pair:** Croissant + Latte")
-
-    with cebu_col:
-        st.subheader("Cebu Branch")
-        st.markdown("**Address:** IT Park, Cebu City")
-        st.markdown("**Hours:** 7:00 AM - 9:00 PM")
-        st.markdown("**Best Pair:** Pandesal + Americano")
-
-    with davao_col:
-        st.subheader("Davao Branch")
-        st.markdown("**Address:** Lanang, Davao City")
-        st.markdown("**Hours:** 7:00 AM - 9:00 PM")
-        st.markdown("**Best Pair:** Ube + Mocha")
+    branch_cards = []
+    for name, details in BRANCH_DETAILS.items():
+        selected_class = " selected" if name == branch else ""
+        branch_cards.append(
+            f"""
+<div class="branch-card{selected_class}">
+  <div class="branch-title">{name} Branch</div>
+  <div class="branch-meta"><b>Address:</b> {details["address"]}</div>
+  <div class="branch-meta"><b>Hours:</b> {details["hours"]}</div>
+  <div class="branch-meta"><b>Best Pair:</b> {details["best_pair"]}</div>
+</div>
+"""
+        )
+    st.markdown(f'<div class="branch-grid">{"".join(branch_cards)}</div>', unsafe_allow_html=True)
 
 elif menu == "Menu List":
     st.header("Menu List")
