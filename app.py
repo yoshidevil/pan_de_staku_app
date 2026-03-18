@@ -3,6 +3,7 @@ import random
 import re
 import sqlite3
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
@@ -1532,6 +1533,21 @@ without losing the feel of a neighborhood bakery.
             "It improves customer convenience while giving the business better control over stock, sales, and service "
             "quality across multiple locations."
         )
+
+    image_candidates = [Path("pan_de_staku.png"), Path("assets/pan_de_staku.png")]
+    home_image = next((candidate for candidate in image_candidates if candidate.exists()), None)
+    if home_image:
+        left_col, center_col, right_col = st.columns([1, 2, 1])
+        with center_col:
+            st.image(str(home_image), use_container_width=True)
+            st.markdown(
+                """
+<div style="text-align: center; margin-top: 0.55rem; font-weight: 600;">
+  Pan de Staku: Freshly baked every day, warmly served for every moment.
+</div>
+""",
+                unsafe_allow_html=True,
+            )
 
 elif menu == "Product":
     st.header("Products")
