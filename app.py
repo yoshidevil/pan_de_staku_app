@@ -17,6 +17,7 @@ DB_PATH = "pan_de_staku.db"
 ADMIN_USERNAME = "admin"
 ADMIN_DEFAULT_PASSWORD = "admin123"
 HAS_PDF_VIEWER = importlib.util.find_spec("streamlit_pdf") is not None
+SIGNUP_BONUS = 300
 BRANCH_DETAILS = {
     "Manila": {
         "address": "Ayala Avenue, Makati",
@@ -153,6 +154,27 @@ def init_db(conn: sqlite3.Connection) -> None:
         )
         """
     )
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS wallets (
+            username TEXT PRIMARY KEY,
+            balance REAL,
+            created_at TEXT
+        )
+        """
+    )
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS wallet_awards (
+            username TEXT,
+            amount REAL,
+            reason TEXT,
+            granted_at TEXT,
+            PRIMARY KEY (username, reason)
+        )
+        """
+    )
+    ensure_orders_schema(conn)
     conn.commit()
 
 
@@ -209,12 +231,21 @@ def create_user(conn: sqlite3.Connection, username: str, password: str) -> tuple
         return False, "Password must be at least 6 characters."
 
     try:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         conn.execute(
             "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
             (username.strip(), hash_password(password), "customer"),
         )
+        conn.execute(
+            "INSERT INTO wallets (username, balance, created_at) VALUES (?, ?, ?)",
+            (username.strip(), SIGNUP_BONUS, now),
+        )
+        conn.execute(
+            "INSERT INTO wallet_awards (username, amount, reason, granted_at) VALUES (?, ?, ?, ?)",
+            (username.strip(), SIGNUP_BONUS, "signup_bonus", now),
+        )
         conn.commit()
-        return True, "Account created successfully."
+        return True, f"Account created. You received PHP {SIGNUP_BONUS} signup credit."
     except sqlite3.IntegrityError:
         return False, "Username already exists."
 
@@ -233,9 +264,67 @@ def init_session_state() -> None:
     st.session_state.setdefault("doughbot_last_response", None)
 
 
+def ensure_orders_schema(conn: sqlite3.Connection) -> None:
+    existing_cols = {
+        row[1] for row in conn.execute("PRAGMA table_info(orders)").fetchall()
+    }
+    if "payment" not in existing_cols:
+        conn.execute("ALTER TABLE orders ADD COLUMN payment TEXT")
+
+
 def get_stock(conn: sqlite3.Connection, item: str) -> int:
     row = conn.execute("SELECT stock FROM inventory WHERE item = ?", (item,)).fetchone()
     return int(row[0]) if row else 0
+
+
+def ensure_wallet(conn: sqlite3.Connection, username: str) -> None:
+    if not username:
+        return
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    conn.execute(
+        "INSERT OR IGNORE INTO wallets (username, balance, created_at) VALUES (?, ?, ?)",
+        (username, 0, now),
+    )
+    conn.commit()
+
+
+def get_wallet_balance(conn: sqlite3.Connection, username: str) -> float:
+    if not username:
+        return 0.0
+    row = conn.execute("SELECT balance FROM wallets WHERE username = ?", (username,)).fetchone()
+    if row is None:
+        ensure_wallet(conn, username)
+        return 0.0
+    return float(row[0] or 0)
+
+
+def grant_signup_bonus_to_existing_users(conn: sqlite3.Connection) -> int:
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    users = conn.execute("SELECT username FROM users WHERE role != 'admin'").fetchall()
+    granted = 0
+    for (username,) in users:
+        award_exists = conn.execute(
+            "SELECT 1 FROM wallet_awards WHERE username = ? AND reason = ?",
+            (username, "signup_bonus"),
+        ).fetchone()
+        if award_exists:
+            continue
+        conn.execute(
+            "INSERT OR IGNORE INTO wallets (username, balance, created_at) VALUES (?, ?, ?)",
+            (username, 0, now),
+        )
+        conn.execute(
+            "UPDATE wallets SET balance = balance + ? WHERE username = ?",
+            (SIGNUP_BONUS, username),
+        )
+        conn.execute(
+            "INSERT INTO wallet_awards (username, amount, reason, granted_at) VALUES (?, ?, ?, ?)",
+            (username, SIGNUP_BONUS, "signup_bonus", now),
+        )
+        granted += 1
+    if granted:
+        conn.commit()
+    return granted
 
 
 def add_to_cart(item: str, qty: int, price: float) -> None:
@@ -246,7 +335,9 @@ def add_to_cart(item: str, qty: int, price: float) -> None:
     st.session_state.cart.append({"item": item, "qty": qty, "price": price})
 
 
-def validate_payment(phone: str, otp: str) -> bool:
+def validate_payment(phone: str, otp: str, method: str) -> bool:
+    if method == "Cash":
+        return bool(re.fullmatch(r"\d{11}", phone))
     return bool(re.fullmatch(r"\d{11}", phone) and re.fullmatch(r"\d{6}", otp))
 
 
@@ -449,6 +540,20 @@ def doughbot_response(prompt: str, conn: sqlite3.Connection = None) -> str:
     stock_words = {"stock", "available", "availability", "in stock", "out of stock", "do you have", "do you sell", "can i get", "left", "remaining"}
     compare_words = {"compare", "difference", "vs", "versus", "between", "better", "worse", "different"}
     help_words = {"help", "assist", "support", "guide", "what can you do", "capabilities"}
+    signup_words = {
+        "signup",
+        "sign up",
+        "sign-up",
+        "register",
+        "registration",
+        "welcome bonus",
+        "signup bonus",
+        "sign up bonus",
+        "new account",
+        "new user",
+        "starter credit",
+        "first time",
+    }
     follow_up_words = {"it", "that", "this", "one", "same", "these", "those", "them"}
     menu_words = {"menu", "list", "items", "products", "what do you sell", "sell", "offer", "catalogue"}
     bye_words = {"bye", "goodbye", "see you", "later", "farewell", "take care", "cya", "peace"}
@@ -631,6 +736,12 @@ def doughbot_response(prompt: str, conn: sqlite3.Connection = None) -> str:
             ),
         )
 
+    if matches(signup_words):
+        return signed_reply(
+            "signup_bonus",
+            f"New customers receive PHP {SIGNUP_BONUS} wallet credit after registering. It applies automatically at checkout.",
+        )
+
     if "who" in words and "you" in words:
         return signed_reply(
             "about",
@@ -791,7 +902,8 @@ def doughbot_response(prompt: str, conn: sqlite3.Connection = None) -> str:
     if matches(payment_words):
         return signed_reply(
             "payment",
-            "We accept GCash and Maya. Provide an 11-digit mobile number and 6-digit OTP to confirm payment.",
+            "We accept GCash, Maya, and Cash. GCash/Maya require an 11-digit mobile number and 6-digit OTP. "
+            "Cash only needs your mobile number.",
         )
 
     if matches(hours_words):
@@ -858,6 +970,7 @@ conn = get_db_connection()
 init_db(conn)
 seed_default_admin(conn)
 seed_inventory(conn)
+grant_signup_bonus_to_existing_users(conn)
 init_session_state()
 
 appearance_choice = st.sidebar.radio(
@@ -1850,6 +1963,20 @@ elif menu == "Presentation":
 
 elif menu == "Register":
     st.header("Register")
+    st.markdown(
+        f"""
+<div class="presentation-card">
+  <div class="presentation-title">Welcome Bonus</div>
+  <div class="presentation-meta">
+    New customers receive <b>PHP {SIGNUP_BONUS}</b> in wallet credit right after signup.
+  </div>
+  <div class="presentation-meta">
+    Your credit can be used automatically during checkout.
+  </div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
     new_user = st.text_input("Username")
     new_pass = st.text_input("Password", type="password")
     if st.button("Create Account"):
@@ -2065,11 +2192,36 @@ elif menu == "Cart":
 
             st.write(f"{item} x{qty} = PHP {subtotal:.2f}")
 
-        st.subheader(f"Total: PHP {total:.2f}")
-        st.subheader("Payment Method")
-        payment_method = st.selectbox("Choose Payment", ["GCash", "Maya"])
-        phone = st.text_input("Mobile Number (11 digits)")
-        otp = st.text_input("OTP (6 digits)")
+        wallet_balance = get_wallet_balance(conn, st.session_state.user)
+        use_wallet = False
+        if wallet_balance > 0:
+            use_wallet = st.checkbox(
+                f"Apply wallet credit (PHP {wallet_balance:.2f})",
+                value=True,
+            )
+        credit_applied = min(wallet_balance, total) if use_wallet else 0.0
+        payable_total = max(total - credit_applied, 0.0)
+        profit_after_credit = profit_total - credit_applied
+
+        st.subheader(f"Order Total: PHP {total:.2f}")
+        if credit_applied > 0:
+            st.write(f"Wallet Credit Applied: -PHP {credit_applied:.2f}")
+        st.subheader(f"Payable Total: PHP {payable_total:.2f}")
+
+        if payable_total > 0:
+            st.subheader("Payment Method")
+            payment_method = st.selectbox("Choose Payment", ["GCash", "Maya", "Cash"])
+            phone = st.text_input("Mobile Number (11 digits)")
+            if payment_method == "Cash":
+                otp = ""
+                st.caption("Cash payment only requires your mobile number.")
+            else:
+                otp = st.text_input("OTP (6 digits)")
+        else:
+            payment_method = "Wallet Credit"
+            phone = ""
+            otp = ""
+            st.success("Your wallet credit covers this order. No payment needed.")
 
         if unavailable_items:
             st.error("Insufficient stock: " + "; ".join(unavailable_items))
@@ -2077,10 +2229,13 @@ elif menu == "Cart":
         if st.button("Confirm Payment"):
             if unavailable_items:
                 st.error("Please adjust cart quantities before checkout.")
-            elif not validate_payment(phone, otp):
+            elif payable_total > 0 and not validate_payment(phone, otp, payment_method):
                 st.error("Invalid payment details.")
             else:
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                payment_label = payment_method
+                if credit_applied > 0 and payable_total > 0:
+                    payment_label = f"Wallet + {payment_method}"
                 conn.execute(
                     """
                     INSERT INTO orders (username, branch, total, profit, payment, timestamp)
@@ -2089,9 +2244,9 @@ elif menu == "Cart":
                     (
                         st.session_state.user,
                         st.session_state.branch,
-                        total,
-                        profit_total,
-                        payment_method,
+                        payable_total,
+                        profit_after_credit,
+                        payment_label,
                         timestamp,
                     ),
                 )
@@ -2100,9 +2255,17 @@ elif menu == "Cart":
                         "UPDATE inventory SET stock = stock - ? WHERE item = ?",
                         (entry["qty"], entry["item"]),
                     )
+                if credit_applied > 0:
+                    conn.execute(
+                        "UPDATE wallets SET balance = MAX(balance - ?, 0) WHERE username = ?",
+                        (credit_applied, st.session_state.user),
+                    )
                 conn.commit()
                 st.session_state.cart.clear()
-                st.success(f"{payment_method} payment successful.")
+                if payment_label == "Wallet Credit":
+                    st.success("Order confirmed using wallet credit.")
+                else:
+                    st.success(f"{payment_method} payment successful.")
 
 elif menu == "DoughBot Chat":
     st.title("DoughBot Assistant")

@@ -120,6 +120,7 @@ ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
 BRANCHES = ["Manila", "Cebu", "Davao", "Iloilo", "General Santos", "Baguio"]
 BRANCH_LIST_TEXT = ", ".join(BRANCHES)
+SIGNUP_BONUS = 300
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 OPENAI_MAX_HISTORY = int(os.getenv("OPENAI_MAX_HISTORY", "12"))
 OPENAI_TEMPERATURE = float(os.getenv("OPENAI_TEMPERATURE", "0.7"))
@@ -194,8 +195,10 @@ def _build_system_prompt() -> str:
         "You are DoughBot, a friendly bakery assistant for Pan de Staku. "
         "Be warm, concise, and helpful. Use only the menu and prices provided below. "
         "If a user asks for an item not listed, say you do not see it and suggest a close alternative. "
-        "You can recommend pairings and simple recipes when asked.\n\n"
+        "You can recommend pairings and simple recipes when asked.\n"
+        f"Signup bonus: new customers get PHP {SIGNUP_BONUS} wallet credit after registering.\n\n"
         f"Branches: {BRANCH_LIST_TEXT}\n"
+        "Payment methods: GCash, Maya, Cash. GCash/Maya require mobile number + OTP. Cash requires mobile number only.\n"
         "Menu and prices:\n"
         f"{menu_lines}"
     )
@@ -424,6 +427,8 @@ def _primary_doughbot_ai(prompt):
     delivery = ["delivery", "deliver", "shipping"]
     branch = ["branch", "branches", "location", "store", "stores", "where are you", "where located"]
     price = ["price", "cost", "how much", "rates"]
+    signup = ["signup", "sign up", "register", "registration", "welcome bonus", "signup bonus", "free 300", "p300"]
+    payment = ["payment", "gcash", "maya", "otp", "cash"]
 
     combos = [
         ("Croissant", "Latte"),
@@ -488,6 +493,19 @@ def _primary_doughbot_ai(prompt):
             "You're welcome. Want another suggestion?",
             "Happy to help. Ask me anytime.",
             "Anytime. I can recommend a combo if you want.",
+        ]
+
+    if any(x in text for x in signup):
+        return [
+            f"New customers get PHP {SIGNUP_BONUS} wallet credit after registering.",
+            f"Signup bonus: PHP {SIGNUP_BONUS} credit added to your wallet right after registration.",
+            "Register an account and the bonus applies automatically at checkout.",
+        ]
+
+    if any(x in text for x in payment):
+        return [
+            "Payment options: GCash, Maya, and Cash.",
+            "GCash/Maya need your mobile number and OTP. Cash only needs your mobile number.",
         ]
 
     if "menu" in text:
