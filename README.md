@@ -1,4 +1,5 @@
 ﻿# 🥐 Pan de Staku - Enterprise Bakery & Coffee Management System with AI Chatbot 🤖
+**Version:** 1.5.0 (March 23, 2026)
 
 **Pan de Staku** is a **French-inspired bakery and coffee management system** built with **Streamlit** ☕.  
 It delivers a **complete digital bakery platform** with customer ordering, analytics, branch control, and an AI-style assistant.
@@ -25,8 +26,10 @@ It simulates a **modern smart bakery platform** capable of handling:
 - 🧠 Added **optional OpenAI-powered responses** for DoughBot with automatic fallback to the local rules engine  
 - 🧾 Updated the **Presentation** page to always render the PDF preview inline  
 - 🧪 Added OpenAI connection status panel and environment-based tuning knobs  
+- 🎁 Added **PHP 300 signup wallet credit** (auto-applied at checkout)  
+- 💵 Added **Cash** as a payment option (mobile number only, no OTP)  
+- 🧾 One-time **bonus migration** grants PHP 300 to existing users  
 - ⚙️ Migrated Streamlit usage from deprecated `use_container_width` to `width="stretch"`  
-
 ---
 
 # 🤖 AI Chatbot - DoughBot
@@ -39,9 +42,10 @@ DoughBot helps customers interact with the bakery using **natural conversation**
 - 🍞 Answer questions about **menu items and prices**  
 - ☕ Recommend **bread and coffee combinations**  
 - 🚚 Provide **delivery and branch information**  
-- 💳 Explain **payment steps (GCash and Maya flow)**  
+- 💳 Explain **payment steps (GCash, Maya, and Cash)**  
 - 🛍 Guide users through **order and checkout steps**  
 - 🧠 Optional OpenAI answers for **open-ended questions** (falls back if API key is missing)  
+- 🎁 Explain the **PHP 300 signup wallet bonus**  
 
 ---
 
@@ -82,7 +86,11 @@ My recommendation: Croissant with Latte.
 - 🛍 Add items to cart  
 - 🌏 Branch-based ordering  
 - 🔢 OTP-style payment validation simulation  
+- 💵 Cash payments with mobile number only  
+- ?? Cash payments with mobile number only  
 - 🤖 DoughBot chat assistance  
+- 🎁 PHP 300 signup wallet credit (auto-applied)  
+- ?? PHP 300 signup wallet credit (auto-applied)  
 
 Branch locations: 🏙 Manila • 🌆 Cebu • 🌃 Davao • 🌅 Iloilo • 🌇 General Santos • ⛰ Baguio
 
@@ -320,14 +328,40 @@ timestamp
 
 ---
 
+## 💳 `wallets`
+
+Stores wallet credits.
+
+```
+username
+balance
+created_at
+```
+
+---
+
+## 🎁 `wallet_awards`
+
+Tracks one-time wallet bonuses.
+
+```
+username
+amount
+reason
+granted_at
+```
+
+---
+
 # 💳 Payment Simulation
 
 The app includes a **digital payment simulation** with:
 
-- 📱 **GCash or Maya selection**  
+- 📱 **GCash, Maya, or Cash selection**  
 - ☎️ **11-digit phone validation**  
-- 🔐 **6-digit OTP validation**  
+- 🔐 **6-digit OTP validation** (GCash/Maya only)  
 - 🧾 **Transaction logging into orders table**  
+- 🎁 **Wallet credit auto-applied** when available  
 
 ---
 
